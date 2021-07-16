@@ -1,8 +1,6 @@
 <?php
 
-
 namespace app\Core\middlewares;
-
 
 use app\Core\Application;
 use app\Core\exception\ForbiddenException;
@@ -16,7 +14,6 @@ class AuthMiddleware extends BaseMiddleware
     {
         $this->actions = $actions;
     }
-
     public function execute()
     {
         if(Application::isGuest()){

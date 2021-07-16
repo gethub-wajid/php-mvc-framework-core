@@ -1,8 +1,6 @@
 <?php
 
-
 namespace app\Core\Forms;
-
 
 use app\Core\Model;
 
@@ -26,21 +24,15 @@ abstract class BaseField
         return sprintf(
             '
             <div class="form-group">
-                <label >"%s"</label>
+                <label >%s</label>
                     %s
                 <div class="invalid-feedback">%s</div>
             </div>
             '
             ,
             $this->model->labels()[$this->attribute] ?? $this->attribute,
-            /*            $this->type,
-                        $this->attribute ,
-                        $this->model->{$this->attribute} ,
-                        $this->model->hasError($this->attribute) ? ' is-invalid':'',*/
             $this->renderInput(),
             $this->model->getFirstError($this->attribute));
     }
-
     abstract public function renderInput(): string;
-
 }

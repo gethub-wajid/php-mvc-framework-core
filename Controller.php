@@ -1,6 +1,5 @@
 <?php
 
-
 namespace app\Core;
 use app\Core\middlewares\BaseMiddleware;
 
@@ -31,5 +30,4 @@ class Controller
     {
         return $this->middlewares;
     }
-
 }

@@ -1,8 +1,7 @@
 <?php
 
-
 namespace app\Core\db;
-
+use app\Core\Application;
 
 class Database
 {
@@ -21,7 +20,6 @@ class Database
 
         try {
             $this->pdo = new \PDO("mysql:host=$servername;dbname=mvc_framework", $username, $password);
-            // set the PDO error mode to exception
             $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         } catch(\PDOException $e) {
             echo "Connection failed: " . $e->getMessage();
@@ -51,16 +49,11 @@ class Database
             $this->log("All migrations are done");
     }
     public function saveMigrations($migrations){
-    //    $str = "";
         foreach ($migrations as $mig){
             $str = "('$mig')";
             $statement = $this->pdo->prepare("INSERT INTO migrations (migration) VALUES $str");
             $statement->execute();
         }
-//        $str = implode("," , array_map(fn($mig) => "('$mig')" , $migrations));
-//        $statement = $this->pdo->prepare("INSERT INTO migrations (migration) VALUES $str");
-//        echo  $str;
-//        $statement->execute();
     }
     public function prepare($query){
         return $this->pdo->prepare($query);
@@ -82,7 +75,4 @@ class Database
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_COLUMN);
     }
-
-
-
 }

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace app\Core;
-
 
 class Request
 {
@@ -17,7 +15,6 @@ class Request
     public function getMethod(){
         return strtolower($_SERVER['REQUEST_METHOD']);
     }
-
     public function isGet(){
         return $this->getMethod() == 'get';
     }

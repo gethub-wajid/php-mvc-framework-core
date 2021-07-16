@@ -1,8 +1,6 @@
 <?php
 
-
 namespace app\Core;
-
 
 class View
 {
@@ -23,7 +21,7 @@ class View
         if(Application::$app->controller){
             $layout = Application::$app->controller->layout;
         }
-        if($layout === null)
+        if($layout === '')
             $layout = 'main';
         ob_start();
         include_once Application::$ROOT_DIR."/Views/layouts/$layout.php";
@@ -37,6 +35,5 @@ class View
         include_once Application::$ROOT_DIR."/Views/$view.php";
         return ob_get_clean();
     }
-
 
 }

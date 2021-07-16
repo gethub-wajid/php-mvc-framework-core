@@ -1,8 +1,6 @@
 <?php
 
-
 namespace app\Core\exception;
-
 
 class NotFoundException extends \Exception
 {

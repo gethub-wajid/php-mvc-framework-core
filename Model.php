@@ -1,8 +1,6 @@
 <?php
 
-
 namespace app\Core;
-
 
 use app\Models\User;
 
@@ -21,8 +19,7 @@ abstract class Model
     /** @var const $RULL_MATCH */
     public $RULL_MATCH = "MustMatch";
     /** @var const $RULL_UNIQUE */
-    public $RULL_UNIIQUE = "Unique";
-
+    public $RULL_UNIQUE = "Unique";
 
     public function labels():array{
         return [];
@@ -50,7 +47,7 @@ abstract class Model
                 if($ruleName === $this->RULL_MATCH && $value !== $this->{$rule['match']}){
                     $this->addErrorForRule($attribute , $this->RULL_MATCH , $rule);
                 }
-                if($ruleName === $this->RULL_UNIIQUE){
+                if($ruleName === $this->RULL_UNIQUE){
                     $className = $rule['class'];
                     $uniqueAttr = $rule['attribute'] ?? $attribute;
                     $tableName = $className::tableName();
@@ -59,7 +56,7 @@ abstract class Model
                     $statement->execute();
                     $record = $statement->fetchObject();
                     if($record){
-                        $this->addErrorForRule($attribute , $this->RULL_UNIIQUE , ['field' => $attribute]);
+                        $this->addErrorForRule($attribute , $this->RULL_UNIQUE , ['field' => $attribute]);
                     }
 
                 }
@@ -69,7 +66,6 @@ abstract class Model
             return true;
         return false;
     }
-
     public function hasError($attribute){
         return $this->errors[$attribute] ?? false;
     }
@@ -93,7 +89,7 @@ abstract class Model
           $this->RULL_EMAIL => "Please enter a valid email",
           $this->RULL_MIN => "Minimum password length is {min}",
           $this->RULL_MAX => "Maximum password length is {max}",
-          $this->RULL_UNIIQUE => "Record with this {field} already exist",
+          $this->RULL_UNIQUE => "Record with this {field} already exist",
         ];
     }
     public function loadData($data){

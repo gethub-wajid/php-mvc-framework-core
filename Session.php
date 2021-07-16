@@ -1,8 +1,6 @@
 <?php
 
-
 namespace app\Core;
-
 
 class Session
 {
@@ -18,7 +16,6 @@ class Session
         }
         $_SESSION[self::FLASH_KEY] = $flashMessages;
     }
-
     public function setFlash($key , $message){
         $_SESSION[self::FLASH_KEY][$key] = ['value'=>$message , 'remove'=>false];
     }
@@ -45,5 +42,4 @@ class Session
         }
         $_SESSION[self::FLASH_KEY] = $flashMessages;
     }
-
 }

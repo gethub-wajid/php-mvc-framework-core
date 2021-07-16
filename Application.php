@@ -12,9 +12,11 @@ use app\Models\User;
 class Application
 {
     /** @var string $layout */
-    public $layout;
+    public $layout = '';
     /** @var string $userClass */
     public $userClass;
+    /** @var string $userType */
+    public $userType;
     /** @var string $ROOT_DIR */
     public static $ROOT_DIR;
     /** @var \app\Core\Router $router */
@@ -35,6 +37,7 @@ class Application
     public $user;
     /** @var View $view */
     public $view;
+
     public function __construct($rootPath)
     {
         self::$ROOT_DIR = $rootPath;
@@ -45,20 +48,32 @@ class Application
         $this->router = new Router($this->request , $this->response);
         $this->db = new Database();
         $this->userClass = \app\Models\User::class;
+        $this->userType = 'user';
         $this->view = new View();
         $primaryValue = $this->session->get('user');
+        if(!$primaryValue) {
+            $primaryValue = $this->session->get('student');
+            $this->userClass = \app\Models\Student::class;
+            $this->userType = 'student';
+        }
+        if(!$primaryValue){
+            $primaryValue = $this->session->get('teacher');
+            $this->userClass = \app\Models\Teacher::class;
+            $this->userType = 'teacher';
+        }
         if($primaryValue){
             $primaryKey = $this->userClass::primaryKey();
             $this->user = $this->userClass::findOne([$primaryKey => $primaryValue]);
         }
-        else
+        else {
             $this->user = null;
+            $this->userType = null;
+        }
     }
     public function getController():Controller
     {
         return $this->controller;
     }
-
     public function setController(Controller $controller):void
     {
         $this->controller = $controller;
@@ -68,24 +83,27 @@ class Application
             echo $this->router->resolve();
         }
         catch (\Exception $e){
-            //echo $e->getCode();
-            //exit;
             $this->response->setStatusCode($e->getCode());
             echo $this->view->renderView('_error' , ['exception' => $e]);
         }
     }
-    public function login(UserModel $user){
+    public function login(UserModel $user , string $userType){
         $this->user = $user;
         $primaryKey = $user->primaryKey();
         $primaryValue = $user->{$primaryKey};
-        $this->session->set('user' , $primaryValue);
+        $this->session->set($userType , $primaryValue);
         return true;
     }
     public function logout(){
         $this->user = null;
+        $this->userType = '';
         $this->session->remove('user');
+        $this->session->remove('student');
+        $this->session->remove(('teacher'));
     }
-    public static function isGuest(){
-        return !self::$app->user;
+    public function isGuest(){
+        if(isset($_SESSION['student']) || isset($_SESSION['user']) || isset($_SESSION['teacher'] ))
+            return false;
+        return true;
     }
 }

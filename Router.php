@@ -41,7 +41,6 @@ class Router
             return Application::$app->view->renderView($callback);
         }
         if(is_array($callback)){
-            //$controller = Application::$app->controller;
             Application::$app->controller = new $callback[0]();
             Application::$app->controller->action = $callback[1];
             $callback[0] = Application::$app->controller;
@@ -51,32 +50,4 @@ class Router
         }
         return call_user_func($callback , $this->request , $this->response);
     }
-/*    public function renderView($view , $params =[]){
-        $layoutContent = $this->layoutContent();
-        $viewContent = $this->renderViewOnly($view , $params);
-        return str_replace("{{content}}" , $viewContent , $layoutContent);
-    }
-    public function renderContent($viewContent){
-        $layoutContent = $this->layoutContent();
-        return str_replace("{{content}}" , $viewContent , $layoutContent);
-    }
-    protected function layoutContent(){
-        $layout = Application::$app->layout;
-        if(Application::$app->controller){
-            $layout = Application::$app->controller->layout;
-        }
-        if($layout === null)
-            $layout = 'main';
-        ob_start();
-        include_once Application::$ROOT_DIR."/Views/layouts/$layout.php";
-        return ob_get_clean();
-    }
-    protected function renderViewOnly($view , $params=[]){
-        foreach ($params as $key=> $value){
-            $$key = $value;
-        }
-        ob_start();
-        include_once Application::$ROOT_DIR."/Views/$view.php";
-        return ob_get_clean();
-    }*/
 }

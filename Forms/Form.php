@@ -8,8 +8,8 @@ use app\Core\Forms;
 
 class Form
 {
-    public static function begin($action , $method){
-        echo sprintf('<form action="%s" method="%s">' , $action , $method);
+    public static function begin( $id , $action , $method){
+        echo sprintf('<form id="$id" action="%s" method="%s">' , $action , $method);
         return new Form();
     }
     public static function end(){
